@@ -73,7 +73,9 @@ export const logoutUserController = async (req, res) => {
     try {
         res.cookie("token", null, {
             expires: new Date(Date.now()),
-            httpOnly: true
+            httpOnly: true,
+            secure : true,
+            sameSite : "none"
         })
         res.status(200).json({
             success: true,
@@ -155,7 +157,10 @@ export const deleteUserController = async (req, res) => {
         await User.findByIdAndDelete(req.user._id);
         res.cookie("token", null, {
             expires: new Date(Date.now()),
-            httpOnly: true
+            httpOnly: true,
+            secure : true,
+            sameSite : "none"
+
         })
 
         res.status(200).json({
