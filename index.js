@@ -22,9 +22,15 @@ app.use(cors({
     credentials : true
 }));
 
-connection();
+app.use(async (req, res, next) => {
+    try {
+        await connection();
+        next();
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Database Connection Error" });
+    }
+});
 
-app.use(express.json());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories",categoryRouter);
 app.use("/api/v1/doctors",doctorRouter);
