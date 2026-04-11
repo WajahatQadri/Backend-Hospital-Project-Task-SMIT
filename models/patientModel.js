@@ -22,7 +22,7 @@ const patientSchema = new mongoose.Schema({
         type: String,
     },
     contact: {
-        type: String,
+        type: Number,
         required: true
     },
     address: {
@@ -35,6 +35,9 @@ const patientSchema = new mongoose.Schema({
     disease: {
         type: String,
         required: true
+    },
+    notes:{
+        type: String,
     },
     history: [{
         disease: String,

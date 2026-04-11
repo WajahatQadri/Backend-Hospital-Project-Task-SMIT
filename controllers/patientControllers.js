@@ -8,7 +8,7 @@ import { sendEmail } from "../utils/sendEmail.js";
 
 export const registerPatient = async (req, res) => {
   try {
-    const { age, gender, bloodgroup, contact, address, disease } = req.body;
+    const { age, gender, bloodgroup, contact, address, disease , notes } = req.body;
 
     // 1. Prevent duplicate profiles
     const existing = await Patient.findOne({ user: req.user._id });
@@ -27,6 +27,14 @@ export const registerPatient = async (req, res) => {
       contact,
       address,
       disease,
+      notes,
+      history: [
+        {
+          disease,
+          notes,
+          treatment: new Date(),
+        },
+      ],
     });
 
     const user = await User.findByIdAndUpdate(
@@ -79,6 +87,28 @@ export const deletePatientProfile = async (req, res) => {
     await user.save();
 
     sendToken(user, 200, res);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const updatePatientProfile = async (req, res) => {
+  try {
+    let patient = await Patient.findOne({ user: req.user._id });
+
+    if (!patient)
+      return res
+        .status(404)
+        .json({ success: false, message: "Patient profile not found" });
+
+    patient = await Patient.findOneAndUpdate({ user: req.user._id }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res
+      .status(200)
+      .json({ success: true, message: "Profile Updated Successfully", patient });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

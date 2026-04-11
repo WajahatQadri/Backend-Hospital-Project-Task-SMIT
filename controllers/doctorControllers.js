@@ -2,6 +2,7 @@ import Doctor from "../models/doctorModel.js";
 import User from "../models/userModel.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import ApiFeatures from "../utils/apiFeatures.js";
+import { sendToken } from "../utils/JWTToken.js";
 
 export const applyToBeDoctor = async (req, res) => {
   try {
@@ -13,6 +14,7 @@ export const applyToBeDoctor = async (req, res) => {
       timing,
       experience,
       hospital,
+      address
     } = req.body;
 
     const alreadyApplied = await Doctor.findOne({
@@ -33,6 +35,7 @@ export const applyToBeDoctor = async (req, res) => {
       timing,
       experience,
       hospital,
+      address
     });
 
     res.status(201).json({

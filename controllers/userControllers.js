@@ -1,3 +1,4 @@
+import Doctor from "../models/doctorModel.js";
 import User from "../models/userModel.js"
 import { sendToken } from "../utils/JWTToken.js"
 import { sendEmail } from "../utils/sendEmail.js"
@@ -154,26 +155,37 @@ export const updatePasswordController = async (req, res) => {
 
 export const deleteUserController = async (req, res) => {
     try {
-        await User.findByIdAndDelete(req.user._id);
+        const userId = req.user._id;
+        const userRole = req.user.role; 
+
+        if (userRole === "PATIENT") {
+            await Patient.findOneAndDelete({ user: userId });
+        } 
+        
+        if (userRole === "DOCTOR" || userRole === "Doctor") {
+            await Doctor.findOneAndDelete({ user: userId });
+        }
+
+        await User.findByIdAndDelete(userId);
+
         res.cookie("token", null, {
             expires: new Date(Date.now()),
             httpOnly: true,
-            secure : true,
-            sameSite : "none"
-
-        })
+            secure: true,
+            sameSite: "none"
+        });
 
         res.status(200).json({
             success: true,
-            message: "User deleted Successfully"
-        })
+            message: "User and all associated data deleted successfully"
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
     }
-}
+};
 
 export const forgotPasswordController = async (req, res) => {
     try {

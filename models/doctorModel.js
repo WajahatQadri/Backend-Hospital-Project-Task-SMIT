@@ -15,7 +15,7 @@ const doctorSchema = new mongoose.Schema({
         required : true
     },
     contact : {
-        type : String,
+        type : Number,
         required : true
     },
     fees : {
@@ -46,6 +46,9 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    address: {
+        type: String,
+    }
 },{
     timestamps : true
 })
