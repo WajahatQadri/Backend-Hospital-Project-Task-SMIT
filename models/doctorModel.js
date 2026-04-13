@@ -20,7 +20,7 @@ const doctorSchema = new mongoose.Schema(
       required: true,
       match: [
       /^(\d{4}[-\s]\d{7}|\+\d{1,3}[-\s]\d{3}[-\s]\d{7})$/, 
-      'Invalid format. Use xxxx-xxxxxxx or +XX-XXX-XXXXXXX'
+      'Invalid phone numberformat'
     ],
       trim: true,
     },
