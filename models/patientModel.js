@@ -22,8 +22,9 @@ const patientSchema = new mongoose.Schema({
         type: String,
     },
     contact: {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        match: [/^\d{10,15}$/, 'Please fill a valid phone number']
     },
     address: {
         type: String,

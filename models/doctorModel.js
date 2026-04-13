@@ -15,8 +15,9 @@ const doctorSchema = new mongoose.Schema({
         required : true
     },
     contact : {
-        type : Number,
-        required : true
+        type: String,
+        required: true,
+        match: [/^\d{10,15}$/, 'Please fill a valid phone number']
     },
     fees : {
         type : Number,
