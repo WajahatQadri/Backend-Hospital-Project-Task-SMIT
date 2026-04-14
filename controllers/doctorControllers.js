@@ -275,7 +275,7 @@ export const getDoctorSelfProfileController = async (req, res) => {
       .populate("user", "name email avatar")
       .populate({
         path: "patients",
-        populate: { path: "user", select: "name email" }, // Deeper population to get names
+        populate: { path: "user", select: "name email" },
       });
 
     if (!doctor) {
@@ -294,5 +294,25 @@ export const getDoctorSelfProfileController = async (req, res) => {
       success: false,
       message: error.message,
     });
+  }
+};
+
+export const adminGetDoctorDetails = async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.params.id)
+      .populate("user", "name email avatar")
+      .populate({
+        path: "patients",
+        populate: { path: "user", select: "name email" },
+      });
+      
+    if (!doctor)
+      return res
+        .status(404)
+        .json({ success: false, message: "Doctor not found" });
+
+    res.status(200).json({ success: true, doctor });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

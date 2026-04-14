@@ -8,7 +8,8 @@ import { sendEmail } from "../utils/sendEmail.js";
 
 export const registerPatient = async (req, res) => {
   try {
-    const { age, gender, bloodgroup, contact, address, disease , notes } = req.body;
+    const { age, gender, bloodgroup, contact, address, disease, notes } =
+      req.body;
 
     // 1. Prevent duplicate profiles
     const existing = await Patient.findOne({ user: req.user._id });
@@ -54,6 +55,10 @@ export const getMyPatientProfile = async (req, res) => {
     const patient = await Patient.findOne({ user: req.user._id })
       .populate("user", "name email")
       .populate("medicines.medicine", "name price potency")
+      .populate({
+        path: "medicines.givenBy",
+        populate: { path: "user", select: "name" }, // This brings in the name from the User model
+      })
       .populate({
         path: "assigned_doctors",
         populate: {
@@ -106,9 +111,11 @@ export const updatePatientProfile = async (req, res) => {
       runValidators: true,
     });
 
-    res
-      .status(200)
-      .json({ success: true, message: "Profile Updated Successfully", patient });
+    res.status(200).json({
+      success: true,
+      message: "Profile Updated Successfully",
+      patient,
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -140,7 +147,20 @@ export const getAllPatients = async (req, res) => {
     const resultPerPage = 10;
     const patientsCount = await Patient.countDocuments();
     const apiFeature = new ApiFeatures(
-      Patient.find().populate("user", "name email"),
+      Patient.find()
+        .populate("user", "name email")
+        .populate("medicines.medicine", "name price potency")
+        .populate({
+          path: "medicines.givenBy",
+          populate: { path: "user", select: "name" }, // This brings in the name from the User model
+        })
+        .populate({
+          path: "assigned_doctors",
+          populate: {
+            path: "user", // Populates the name inside the doctor's user field
+            select: "name",
+          },
+        }),
       req.query,
     )
       .search()
@@ -173,6 +193,7 @@ export const addMedicalHistory = async (req, res) => {
       .status(200)
       .json({ success: true, message: "History Updated", patient });
   } catch (error) {
+    console.error("error", error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

@@ -21,11 +21,13 @@ const patientSchema = new mongoose.Schema({
     bloodgroup: {
         type: String,
     },
-    contact: {
-        type: String,
-        required: true,
-        match: [/^\d{10,15}$/, 'Please fill a valid phone number']
-    },
+    contact: {        
+      type: String,
+      required: true,
+      match: [
+      /^(\d{4}[-\s]\d{7}|\+\d{1,3}[-\s]\d{3}[-\s]\d{7})$/, 
+      'Invalid phone numberformat'
+    ]},
     address: {
         type: String,
     },

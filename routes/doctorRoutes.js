@@ -1,5 +1,5 @@
 import express from "express";
-import { adminDeleteDoctor, applyToBeDoctor, approveDoctor, cancelDoctorApplication, deleteDoctorProfile, getAllDoctors, getDoctorDetails, getDoctorSelfProfileController, getPendingDoctors, rejectDoctorApplication, updateDoctorProfile } from "../controllers/doctorControllers.js";
+import { adminDeleteDoctor, adminGetDoctorDetails, applyToBeDoctor, approveDoctor, cancelDoctorApplication, deleteDoctorProfile, getAllDoctors, getDoctorDetails, getDoctorSelfProfileController, getPendingDoctors, rejectDoctorApplication, updateDoctorProfile } from "../controllers/doctorControllers.js";
 import { authorizeRoles, isAuthenticatedUser } from "../utils/auth.js";
 const doctorRouter = express.Router();
 
@@ -12,6 +12,7 @@ doctorRouter.delete("/doctor/delete",isAuthenticatedUser,deleteDoctorProfile);
 doctorRouter.delete("/doctor/delete-request",isAuthenticatedUser,cancelDoctorApplication);
 
 // for Admin
+doctorRouter.get("/admin/doctor/:id",isAuthenticatedUser,authorizeRoles("ADMIN"), adminGetDoctorDetails);
 doctorRouter.get("/admin/doctors/pending", isAuthenticatedUser, authorizeRoles("ADMIN"), getPendingDoctors);
 doctorRouter.put("/admin/doctor/approve/:doctorId", isAuthenticatedUser, authorizeRoles("ADMIN"), approveDoctor);
 doctorRouter.delete("/admin/doctor/reject/:doctorId",isAuthenticatedUser,authorizeRoles("ADMIN"),rejectDoctorApplication);
