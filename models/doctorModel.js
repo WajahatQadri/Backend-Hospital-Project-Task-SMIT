@@ -11,10 +11,10 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       default: "USER",
     },
-    specialization: {
+    specialization: [{
       type: String,
       required: true,
-    },
+    }],
     contact: {
       type: String,
       required: true,
