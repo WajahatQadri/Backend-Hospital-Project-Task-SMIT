@@ -211,7 +211,7 @@ export const forgotPasswordController = async (req, res) => {
       ? new URL(req.get("referer")).origin
       : "http://localhost:5173"; // Fallback for local testing
 
-    const resetUrl = `${frontendOrigin}/password/reset/${resetToken}`;
+    const resetUrl = `${frontendOrigin}/reset-password/${resetToken}`;
 
     const message = `if you want to reset password click on this link ${resetUrl} If you did not request this, please ignore.`;
     try {
