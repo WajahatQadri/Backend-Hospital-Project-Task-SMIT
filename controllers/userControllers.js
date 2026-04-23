@@ -25,6 +25,13 @@ export const registerUserController = async (req, res) => {
             }
         });
 
+        if(!user){
+            return res.status(400).json({
+                success : false,
+                message: "user not created"
+            })
+        }
+
         sendToken(user, 201, res);
 
     } catch (error) {
