@@ -67,11 +67,10 @@ const doctorSchema = new mongoose.Schema(
   },
 );
 
-doctorSchema.pre('save', function(next) {
+doctorSchema.pre('save', async function() {
   if (this.contact) {
     this.contact = this.contact.replace(/-/g, ' ');
   }
-  next();
 });
 
 const Doctor = mongoose.model("Doctor", doctorSchema);
