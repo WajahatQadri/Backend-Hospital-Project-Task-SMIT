@@ -12,7 +12,7 @@ userRouter.get("/user-profile",isAuthenticatedUser ,getUserProfileController);
 userRouter.put("/update-profile",isAuthenticatedUser ,updateUserProfileController);
 userRouter.put("/update-password",isAuthenticatedUser,updatePasswordController);
 userRouter.delete("/delete-profile",isAuthenticatedUser,deleteUserController);
-userRouter.post("/forgot-password",isAuthenticatedUser,forgotPasswordController);
+userRouter.post("/forgot-password",forgotPasswordController);
 userRouter.put("/reset-password/:token",resetPasswordRequestController);
 
 // Admin Routes
