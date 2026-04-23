@@ -13,7 +13,7 @@ userRouter.put("/update-profile",isAuthenticatedUser ,updateUserProfileControlle
 userRouter.put("/update-password",isAuthenticatedUser,updatePasswordController);
 userRouter.delete("/delete-profile",isAuthenticatedUser,deleteUserController);
 userRouter.post("/forgot-password",forgotPasswordController);
-userRouter.put("/reset-password/:token",resetPasswordRequestController);
+userRouter.post("/reset-password/:token",resetPasswordRequestController);
 
 // Admin Routes
 userRouter.get("/admin/get-all-users",isAuthenticatedUser,authorizeRoles("ADMIN"),getAllUsers);
